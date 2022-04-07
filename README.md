@@ -1,67 +1,45 @@
-# Neuffer developers-test
+# Csv calculator
 
-We have prepared for you simple test task what as we believe, allow us to estimate your experience.
-It is a small php-script, which should be started in console like:
+This project is a PHP CLI application that can be used to run basic calculations on the first two columns of a given csv file and write the result of the calculation into a new csv file if the calculated result value is greater than 0. 
 
-`php console.php --action {action}  --file {file}`
+## Requirements
 
-Script will take two required parameters:
+- Composer
+- PHP (7.4 or 8.0)
 
-`{file}` - csv-source file with numbers, where each row contains two numbers between -100 and 100, and
+## Installation
 
-`{action}` - what action should we do with numbers from `{file}`, and can take next values:
+After checkout from the repository run `composer install` to get the required vendor packages installed.
 
-* <b>plus</b> - to count summ of the numbers on each row in the {file}
+## Usage
+
+### Parameters
+
+#### Action
+
+The application can handle the following actions:
+
+* <b>plus</b> - to count sum of the numbers on each row in the file
 * <b>minus</b> - to count difference between first number in the row and second
-* <b>multiply</b> - to multiply the numbers on each row in the {file} 
-* <b>division</b> - to divide  first number in the row and second
+* <b>multiply</b> - to multiply the numbers on each row in the file
+* <b>division</b> - to divide first number in the row and second
 
+#### File
 
-As result of the command execution should be csv file with three columns: first number, second number, and result. In CSV-file should be written **ONLY** numbers greater than null. If result less than null - it should be written in logs.
+The input csv file to process. 
 
-**Example 1**
+### Examples
 
-`php console.php --action plus  --file {file}`, where in file you can find next numbers:
+    php console.php --action {action} --file {file}
 
-10 20 <br/>
--30 20 <br/>
--3 5 <br/>
+or
 
-As result in CSV file you should write:
+    php console.php -a {action} -f {file}
 
-10 20 30 <br/>
--3 5 2 
+## Test
 
-And in log file, something like "_numbers are - 30 and 20 are wrong_"
+Run `composer test` to have the application tested in your environment. It executes the following checks:
 
-**Example 2**
-
-`php console.php --action division  --file {file}`, where in file you can find next numbers:
-
-20 10 <br/>
--30 20 <br/>
-3 0 <br/>
-
-As result in CSV file you should write:
-
-20 10 2 <br/>
-
-And in log file, something like:
- 
-_numbers are -30 and 20 are wrong_ <br/>
-_numbers are 3 and 0 are wrong, is not allowed_ <br/>
-
-##Task 
-You need to refactor code and write it on proper way. Just do your best: update/delete/add code as you wish.
-
-After finishing - please push your code in your github/bitbucket account, and send me link back.
-
-###Requirements
-
-* After refactoring code shoud work
-* Code should work on PHP7.4+
-* As file source example please use test.csv
-
-###Result
-Please put result of your work in your Github or Bitbucket account, and send link back.
-
+- phpcs - Coding standards (PSR-12)
+- phpstan - Static code analysis
+- phpunit - Unit- and Integration tests
