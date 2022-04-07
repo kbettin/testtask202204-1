@@ -1,46 +1,36 @@
+#!/usr/bin/env php
 <?php
 
-$shortopts = "a:f:";
-$longopts  = array(
-    "action:",
-    "file:",
-);
+/**
+ * Bridge script to trigger "csv calculation" process via old commandline command.
+ *
+ * Example call:
+ *  php .\console.php --action plus --file .\test.csv
+ */
 
-$options = getopt($shortopts, $longopts);
+require __DIR__ . '/vendor/autoload.php';
 
-if(isset($options['a'])) {
-    $action = $options['a'];
-} elseif(isset($options['action'])) {
-    $action = $options['action'];
-} else {
-    $action = "xyz";
-}
+use App\Command\CsvCalculationCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 
-if(isset($options['f'])) {
-    $file = $options['f'];
-} elseif(isset($options['file'])) {
-    $file = $options['file'];
-} else {
-    $file = "notexists.csv";
-}
+$application = new Application();
 
-try {
-    if ($action == "plus") {
-        include 'files/ClassOne.php';
-        $classOne = new ClassOne($file);
-    } elseif ($action == "minus") {
-        include 'files/ClassTwo.php';
-        $classTwo = new ClassTwo($file, "minus");
-        $classTwo->start();
-    } elseif ($action == "multiply") {
-        include 'files/Classthree.php';
-        $classThree = new Classthree();
-        $classThree->setFile($file);
-        $classThree->execute();
-    } elseif ($action == "division") {
-        include 'files/classFour.php';
-        $classFouyr = new classFour($file);
-    } else {
-        throw new \Exception("Wrong action is selected");
-    }
-} catch (\Exception $exception) {}
+$command = new CsvCalculationCommand();
+$application->add($command);
+
+$inputDefinition = new InputDefinition([
+    new InputOption('action', 'a', InputOption::VALUE_REQUIRED),
+    new InputOption('file', 'f', InputOption::VALUE_REQUIRED),
+]);
+
+$argumentInput = new ArgvInput(null, $inputDefinition);
+
+$application->run(new ArrayInput([
+    'command' => $command->getName(),
+    'action' => $argumentInput->getOption('action'),
+    'inputFile' => $argumentInput->getOption('file')
+]));
