@@ -6,5 +6,25 @@
             "App\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "php": "~7.4 || ~8.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4.28"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.5",
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.6"
+    },
+    "scripts": {
+        "test": [
+            ".\\vendor\\bin\\phpcs --standard=PSR12 ./src",
+            ".\\vendor\\bin\\phpstan",
+            ".\\vendor\\bin\\phpunit"
+        ]
+    }
 }
